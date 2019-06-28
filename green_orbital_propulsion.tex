@@ -134,6 +134,20 @@ In regard to our final result the amount of Methanol and Water is sufficient to 
 
 % B4
 \section{Thruster Preliminary Design}
+The new propulsion system should provide the same amount of thrust as the reference case beeing 20N. With thrust $F$ beeing defined as
+\begin{equation*}
+	F = I_{sp} \cdot \dot{m} \cdot g \overset{!}{=} 20\text{N}.
+\end{equation*}
+Therefore, the needed mass flow rate $\dot{m}_{\text{prop}}$ is calculated using the earth's gravitational acceleration of $g=9.81\frac{m}{s}$ and the determined specific impulse of task B3.
+\begin{equation*}
+	\dot{m}_{\text{prop}} = 0.00862 \frac{\text{kg}}{\text{s}} = 8.62 \frac{\text{g}}{\text{s}}
+\end{equation*}
+Furthermore, to reach the same amount of total impulse (see Table \ref{tab:reference}) the propellant mass $m_{\text{prop}}$ can be calculated to be
+\begin{equation*}
+	m_{\text{prop}} = \frac{I_{\text{Total}}}{F} \cdot \dot{m}_{\text{prop}} =  211.97\text{kg}
+\end{equation*}
+
+
 
 % B5
 \section{Detailed Design Blow-Down Feed System}
@@ -150,8 +164,8 @@ In regard to our final result the amount of Methanol and Water is sufficient to 
 		\makecell{TanDEM-X\\Thruster} & \makecell{N2H4} & 4 & 1 & \makecell{$>135000$}& \makecell{$I_{sp}=200-223s$,\\$p_{\text{feed}}=5.5-22\text{bar}$,\\$\epsilon=80$\\} & \makecell{\cite{tandemX} \cite{ariane1N}}\\ \hline
 		
 		\makecell{Prisma\\Thruster}& LMP-103S & 2 & 1 & \makecell{$\approx 108773$} & \makecell{$I_{sp}=204-231s$,\\$p_{\text{feed}}=4.5-22\text{bar}$,\\$\epsilon=100$} & \cite{hpgpThruster} \\ \hline
+		\label{tab:reference}
 	\end{tabular}
-	\label{tab:reference}
 \end{adjustbox}
 
 % References
