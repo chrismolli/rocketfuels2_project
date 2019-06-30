@@ -22,7 +22,7 @@
 \usepackage[style=alphabetic]{biblatex}  
 \addbibresource{references/papers.bib}  
 \setlength{\parindent}{0em} 
- 
+\usepackage{listings}
  
 \newcommand{\N}{\mathbb{N}}
 \newcommand{\Z}{\mathbb{Z}}
@@ -97,7 +97,7 @@ Using Equation (\ref{eq:chamber_pressure_estimation}) we can translate the feedi
 \section{Propellants Comparision}
 Using the parameters of the reference case in Table \ref{tab:selected_reference_case} the following green propellants in Table \ref{tab:comparison} were investigated using NASA CEA. The reaction products were set to frozen from the nozzle on outwards, to prevent further reaction in the nozzle as demanded in the task description.
 
-\begin{table}[h]
+\begin{table}[!h]
 	\centering
 	\begin{tabular}{|c|c|c|}
 		\hline
@@ -112,11 +112,57 @@ Using the parameters of the reference case in Table \ref{tab:selected_reference_
 
 % B3
 \section{Propellant Optimization}
+\label{chap:task_b3}
 To optimize the propellant composition of Methanol, ADN and Water a rocketCEA script was written in Python. It performs a search on a composition grid, with a step size of $1\%$ weight fraction. It iterates through all possible composition permutations. The input parameters were taken from the reference case in Table \ref{tab:selected_reference_case} using only the maximum chamber pressure. The results are discussed in the following.
 
 \paragraph{All results}
-The top figure in Figure \ref{fig:fuel_optimization_all_results} shows the result of the optimization with a maximum specific impulse in vacuum of $I_{sp}=301.43s$ using $83\%$ of Methanol, $17\%$ ADN and $0\%$ Water.
+The top figure in Figure \ref{fig:fuel_optimization_all_results} shows the result of the optimization with a maximum specific impulse in vacuum of $I_{sp}=301.43s$ using $17\%$ of Methanol, $83\%$ ADN and $0\%$ Water.
 
+\paragraph{Final result}
+The task demanded a combustion temperature below 1000$^\circ$C (1273.15K). Hence, all results with a higher combustion temperature were removed from the lower figure of Figure \ref{fig:fuel_optimization_all_results}. This lead to the final result with a maximum specific impulse in vacuum of $I_{sp}=236.50s$ using $39\%$ of Methanol, $59\%$ ADN and $2\%$ Water.\\
+
+Furthermore, we need to consider that solid ADN will need to be dissolved in the other two components of the propellant. At a temperature of $20^\circ C$, which is coherent with our initial propellant temperature, $s_{\text{ADN,H2O}}=3.56$ times more Water than ADN is needed to completely dissolve the ADN. Methanol can dissolve much more ADN at a rate of only $s_{\text{ADN,Meth}}=0.86$ \cite{Larsson2011}. The solubility $s$ is defined as\\
+\begin{equation}
+	s_{a,b} = \frac{m_b}{m_a} .
+\end{equation}
+
+The used $39\%$ Methanol can dissolve $45.35\%$ of ADN. The remaining $13.65\%$ of ADN would need to be dissolved by the propellants $2\%$ of Water, which can only dissolve $0.56\%$ of ADN at a temperature of 20$^\circ$C. Therefore, the found propellant composition would contain $13.09\%$ of solid ADN, which would make it unusable under real conditions.\\
+
+Optimizing the propellant composition to comply with the mentioned solubility constraint is beyond the scope of this task and shall only be mentioned here.
+
+% B4
+\section{Thruster Preliminary Design}
+The new propulsion system should provide the same amount of thrust as the reference case beeing 20N. With thrust $F$ beeing defined as
+\begin{equation*}
+	F = I_{sp} \cdot \dot{m}_{\text{prop}} \cdot g \overset{!}{=} 20\text{N}.
+\end{equation*}
+Therefore, the needed mass flow rate $\dot{m}_{\text{prop}}$ is calculated using the earth's gravitational acceleration of $g=9.81\frac{m}{s^2}$ and the determined specific impulse of task B3 of $I_{sp}=236.5s$.
+\begin{equation*}
+	\dot{m}_{\text{prop}} = 0.00862 \frac{\text{kg}}{\text{s}} = 8.62 \frac{\text{g}}{\text{s}}
+\end{equation*}
+Furthermore, to reach the same amount of total impulse $I_{\text{total}}=517000\text{Ns}$ (see Table \ref{tab:reference}) the propellant mass $m_{\text{prop}}$ can be calculated to be
+\begin{equation*}
+	m_{\text{prop}} = \frac{I_{\text{Total}}}{F} \cdot \dot{m}_{\text{prop}} =  211.97\text{kg}
+\end{equation*}
+Using NASA CEA the complete output is computed for the propellant composition found in Section \ref{chap:task_b3}. It can be found on Page \pageref{chap:cea_output} to obtain the characteristic exhaust speed $c^*=4240.4\frac{\text{ft}}{\text{s}}=1292.5\frac{\text{m}}{\text{s}}$.From here we can calculate the needed throat area $A_t$ to
+\begin{equation*}
+	A_t = \frac{c^* \cdot \dot{m}_{\text{prop}}}{p_c} = 6.96 \cdot 10^{-6} \text{m}^2.
+\end{equation*}
+Using the expansion ratio $\epsilon=60$ this leads to a nozzle exit area $A_e$ of
+\begin{equation*}
+A_e = \epsilon * A_t = 4.18 \cdot 10^{-4} \text{m}^2.
+\end{equation*}
+
+% B5
+\section{Detailed Design Blow-Down Feed System}
+% TODO design BOL and EOL pressure (BOL=16bar)
+% TODO study thrust along pressure 
+% TODO define feeding system architecture (classic Blow-Down System...)
+% TODO calculate amount of pressurant needed
+% TODO calculate dimensions of propellant and pressurant tanks
+
+% Optimzation results
+\newpage
 \begin{figure}[!h]
 	\centering
 	\includegraphics[width=0.8\linewidth]{figures/b3_1.pdf}
@@ -125,36 +171,9 @@ The top figure in Figure \ref{fig:fuel_optimization_all_results} shows the resul
 	\label{fig:fuel_optimization_all_results}
 \end{figure}
 
-\paragraph{Final result}
-The task demanded a combustion temperature below 1000$^\circ$C (1273.15K). Hence, all results with a higher combustion temperature were removed from the lower figure of Figure \ref{fig:fuel_optimization_all_results}. This lead to the final result with a maximum specific impulse in vacuum of $I_{sp}=236.50s$ using $59\%$ of Methanol, $39\%$ ADN and $2\%$ Water.\\
-
-Furthermore, we need to consider that solid ADN will need to be dissolved in the other two components of the propellant. At a temperature of $20^\circ C$, which is coherent with our initial propellant temperature, $3.56$ times more Water than ADN is needed to completely dissolve the ADN. Methanol can dissolve much more ADN at a rate of only $0.86$ \cite{Larsson2011}.\\
-
-In regard to our final result the amount of Methanol and Water is sufficient to completely dissolve the used ADN.
-
-% B4
-\section{Thruster Preliminary Design}
-The new propulsion system should provide the same amount of thrust as the reference case beeing 20N. With thrust $F$ beeing defined as
-\begin{equation*}
-	F = I_{sp} \cdot \dot{m} \cdot g \overset{!}{=} 20\text{N}.
-\end{equation*}
-Therefore, the needed mass flow rate $\dot{m}_{\text{prop}}$ is calculated using the earth's gravitational acceleration of $g=9.81\frac{m}{s}$ and the determined specific impulse of task B3.
-\begin{equation*}
-	\dot{m}_{\text{prop}} = 0.00862 \frac{\text{kg}}{\text{s}} = 8.62 \frac{\text{g}}{\text{s}}
-\end{equation*}
-Furthermore, to reach the same amount of total impulse (see Table \ref{tab:reference}) the propellant mass $m_{\text{prop}}$ can be calculated to be
-\begin{equation*}
-	m_{\text{prop}} = \frac{I_{\text{Total}}}{F} \cdot \dot{m}_{\text{prop}} =  211.97\text{kg}
-\end{equation*}
-
-
-
-% B5
-\section{Detailed Design Blow-Down Feed System}
-
 % Overview
 \newpage
-\begin{adjustbox}{angle=90, center,caption={Overview of small propulsion systems using monopropellants.},float=table}
+\begin{adjustbox}{angle=90, center,caption={Overview of small propulsion systems using monopropellants.}}%,float=table}
 	\begin{tabular}{|c|c|c|c|c|c|c|}
 		\hline
 		Name & Propellants & \makecell{Number of\\Thrusters} & \makecell{Thruster\\Class {[}N{]}} & \makecell{Total\\Impulse [Ns]} & Other & References\\ \hline
@@ -167,6 +186,12 @@ Furthermore, to reach the same amount of total impulse (see Table \ref{tab:refer
 		\label{tab:reference}
 	\end{tabular}
 \end{adjustbox}
+
+% Appendix
+\newpage
+\section{NASA CEA Output for Optimized Propellant}
+\label{chap:cea_output}
+\lstinputlisting{results/b4.out}
 
 % References
 \newpage

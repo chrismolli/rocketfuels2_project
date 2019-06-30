@@ -1,0 +1,81 @@
+
+ *******************************************************************************
+
+         NASA-GLENN CHEMICAL EQUILIBRIUM PROGRAM CEA, OCTOBER 18, 2002
+                   BY  BONNIE MCBRIDE AND SANFORD GORDON
+      REFS: NASA RP-1311, PART I, 1994 AND NASA RP-1311, PART II, 1996
+
+ *******************************************************************************
+
+
+
+ reac
+  name H2O   H 2 O 1   wt%=2.0
+  h,kj/mol=-285.8       t(k)=293.15
+  name Methanol   C 1 H 4 O 1   wt%=39.0
+  h,kj/mol=-239.2       t(k)=293.15
+  name ADN   H 4 N 4 O 4   wt%=59.0
+  h,kj/mol=-134.6       t(k)=293.15
+  
+ prob case= WaterMethanolADN_Mix
+  rocket frozen nfz=2   p,psia=232.064000, supar=60.000000,
+  
+  
+ outp   calories short
+  
+ end
+
+
+
+
+
+           THEORETICAL ROCKET PERFORMANCE ASSUMING FROZEN COMPOSITION
+                                 AFTER POINT 2
+
+ Pinj =   232.1 PSIA
+ CASE = WaterMethanolAD
+
+             REACTANT                    WT FRACTION      ENERGY      TEMP
+                                          (SEE NOTE)      CAL/MOL       K  
+ name        H2O                          2.0000000    -68307.839    293.150
+ name        Methanol                    39.0000000    -57170.172    293.150
+ name        ADN                         59.0000000    -32170.172    293.150
+
+ O/F=    0.00000  %FUEL=100.000000  R,EQ.RATIO= 1.835864  PHI,EQ.RATIO= 0.000000
+
+                 CHAMBER   THROAT     EXIT
+ Pinf/P            1.0000   1.8063  1440.10
+ P, ATM            15.791   8.7422  0.01097
+ T, K             1541.74  1366.53   259.05
+ RHO, G/CC       2.2036-3 1.3764-3 9.1073-6
+ H, CAL/G         -924.68 -1021.35 -1538.01
+ U, CAL/G        -1098.23 -1175.16 -1567.17
+ G, CAL/G        -5489.22 -5067.15 -2304.96
+ S, CAL/(G)(K)     2.9606   2.9606   2.9606
+
+ M, (1/n)          17.654   17.655   17.655
+ Cp, CAL/(G)(K)    0.5536   0.5521   0.4138
+ GAMMAs            1.2555   1.2569   1.3736
+ SON VEL,M/SEC      954.8    899.4    409.4
+ MACH NUMBER        0.000    1.000    5.534
+
+ PERFORMANCE PARAMETERS
+
+ Ae/At                      1.0000   60.000
+ CSTAR, FT/SEC              4240.4   4240.4
+ CF                         0.6959   1.7528
+ Ivac,LB-SEC/LB              164.7    236.5
+ Isp, LB-SEC/LB               91.7    231.0
+
+ MOLE FRACTIONS
+
+ CH4             0.00004   *CO             0.14957   *CO2            0.06529
+ *H2             0.32692   H2O             0.29022   NH3             0.00007
+ *N2             0.16790
+
+  * THERMODYNAMIC PROPERTIES FITTED TO 20000.K
+
+ NOTE. WEIGHT FRACTION OF FUEL IN TOTAL FUELS AND OF OXIDANT IN TOTAL OXIDANTS
+
+
+
