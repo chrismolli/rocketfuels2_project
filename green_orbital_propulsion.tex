@@ -1,4 +1,4 @@
-% --------------------------------------------------------------
+  % --------------------------------------------------------------
 % This is all preamble stuff that you don't have to worry about.
 % Head down to where it says "Start here"
 % --------------------------------------------------------------
@@ -49,7 +49,7 @@
 % --------------------------------------------------------------
  
 \title{Green Orbital Propulsion System for a Small Satellite}
-\author{Christian Molli\`ere}
+\author{Christian Molli\`ere\\Luca Irtingkauf\\Christian Strohl}
 \maketitle
 \newpage
 
@@ -121,21 +121,19 @@ The top figure in Figure \ref{fig:fuel_optimization_all_results} shows the resul
 \paragraph{Final result}
 The task demanded a combustion temperature below 1000$^\circ$C (1273.15K). Hence, all results with a higher combustion temperature were removed from the lower figure of Figure \ref{fig:fuel_optimization_all_results}. This lead to the final result with a maximum specific impulse in vacuum of $I_{sp}=236.50s$ using $39\%$ of Methanol, $59\%$ ADN and $2\%$ Water.\\
 
-Furthermore, we need to consider that solid ADN will need to be dissolved in the other two components of the propellant. At a temperature of $20^\circ C$, which is coherent with our initial propellant temperature, $s_{\text{ADN,H2O}}=3.56$ times more Water than ADN is needed to completely dissolve the ADN. Methanol can dissolve much more ADN at a rate of only $s_{\text{ADN,Meth}}=0.86$ \cite{Larsson2011}. The solubility $s$ is defined as\\
-\begin{equation}
-	s_{a,b} = \frac{m_b}{m_a} .
-\end{equation}
+Furthermore, we need to consider that solid ADN will need to be dissolved in the other two components of the propellant. At a temperature of $20^\circ C$, which is coherent with our initial propellant temperature, $356\text{g}$ ADN can be dissolved in $100\text{g}$ of Water and $86\text{g}$ ADN can be dissolved in $100\text{g}$ Methanol \cite{Larsson2011}.\\
 
-The used $39\%$ Methanol can dissolve $45.35\%$ of ADN. The remaining $13.65\%$ of ADN would need to be dissolved by the propellants $2\%$ of Water, which can only dissolve $0.56\%$ of ADN at a temperature of 20$^\circ$C. Therefore, the found propellant composition would contain $13.09\%$ of solid ADN, which would make it unusable under real conditions.\\
+According to this data, the used $39\%$ Methanol can dissolve $33.54\%$ of ADN. The remaining $25.46\%$ of ADN would need to be dissolved by the propellants $2\%$ of Water, which can only dissolve $7.12\%$ of ADN at a temperature of 20$^\circ$C. Therefore, the found propellant composition would contain $18.34\%$ of solid ADN rendering it unusable in real engines, because the solids are likely to cause problems in the feeding systems and would lead to inhomogenous mixtures in the combustion chamber.\\
 
 Optimizing the propellant composition to comply with the mentioned solubility constraint is beyond the scope of this task and shall only be mentioned here.
 
 % B4
 \section{Thruster Preliminary Design}
 The new propulsion system should provide the same amount of thrust as the reference case beeing 20N. With thrust $F$ beeing defined as
-\begin{equation*}
+\begin{equation}
 	F = I_{sp} \cdot \dot{m}_{\text{prop}} \cdot g \overset{!}{=} 20\text{N}.
-\end{equation*}
+	\label{eq:thrust}
+\end{equation}
 Therefore, the needed mass flow rate $\dot{m}_{\text{prop}}$ is calculated using the earth's gravitational acceleration of $g=9.81\frac{m}{s^2}$ and the determined specific impulse of task B3 of $I_{sp}=236.5s$.
 \begin{equation*}
 	\dot{m}_{\text{prop}} = 0.00862 \frac{\text{kg}}{\text{s}} = 8.62 \frac{\text{g}}{\text{s}}
@@ -147,6 +145,7 @@ Furthermore, to reach the same amount of total impulse $I_{\text{total}}=517000\
 Using NASA CEA the complete output is computed for the propellant composition found in Section \ref{chap:task_b3}. It can be found on Page \pageref{chap:cea_output} to obtain the characteristic exhaust speed $c^*=4240.4\frac{\text{ft}}{\text{s}}=1292.5\frac{\text{m}}{\text{s}}$.From here we can calculate the needed throat area $A_t$ to
 \begin{equation*}
 	A_t = \frac{c^* \cdot \dot{m}_{\text{prop}}}{p_c} = 6.96 \cdot 10^{-6} \text{m}^2.
+	\label{eq:throat_ares}
 \end{equation*}
 Using the expansion ratio $\epsilon=60$ this leads to a nozzle exit area $A_e$ of
 \begin{equation*}
@@ -155,11 +154,72 @@ A_e = \epsilon * A_t = 4.18 \cdot 10^{-4} \text{m}^2.
 
 % B5
 \section{Detailed Design Blow-Down Feed System}
-% TODO design BOL and EOL pressure (BOL=16bar)
-% TODO study thrust along pressure 
-% TODO define feeding system architecture (classic Blow-Down System...)
-% TODO calculate amount of pressurant needed
-% TODO calculate dimensions of propellant and pressurant tanks
+Combining Equation \ref{eq:thrust} and Equation \ref{eq:throat_ares} the produced thrust of the optimized propellant can be studied for varying chamber pressures $p_c$ as seen in Equation \ref{eq:thrust_vs_pc}.
+\begin{equation}
+	F = I_{sp} \cdot g \cdot \frac{A_t\cdot p_c}{c^*}
+	\label{eq:thrust_vs_pc}
+\end{equation}
+We want the engine to retain at least a quarter of its thrust, being $F_{\text{EOL}}=5\text{N}$, at the end of its life. According to our calculations (see Figure \ref{fig:thrust_vs_pc}) the engine will linearly loss thrust with decreasing chamber pressures. Therefore, a end of life chamber pressure of $p_{c,\text{EOL}}=4\text{bar}$ is defined. Furthermore, the beginning of life chamber pressure is defined to be the same as in the reference case $p_{c,\text{BOL}}=16\text{bar}$.\\
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.8\linewidth]{figures/thrust_vs_pc.pdf}
+	\caption{The optimized propellants thrust in vacuum at different chamber pressures.}
+	\label{fig:thrust_vs_pc}
+\end{figure}
+
+Since it is the simplest and cheapest design, a blow-down feed system is used to feed the propellant to the engine. Assuming the same pressure loss at the fuel injector $\Delta p_{\text{injector}}= \frac{p_c}{2}$ as in Section \ref{chap:reference_case} leads to feeding pressures of $p_{feed,\text{BOL}}=24\text{bar}$ and $p_{feed,\text{EOL}}=6\text{bar}$.\\
+
+To achieve an even greener propulsion system, we decided to use Nitrogen instead of Helium to pressurize the propellant. Considering the global shortage of Helium this will ensure a sustainable propulsion system for years to come. The final feeding system architecture can be seen in Figure \ref{fig:blowdown_design}.\\
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\linewidth]{figures/blowdown_design.pdf}
+	\caption{Final design of the blow down feeding system for the green orbital propulsion system.}
+	\label{fig:blowdown_design}
+\end{figure}
+
+In order to Calculate the amount of needed pressurant, we will need to estimate the density of the used propellant. According to this lectures exercise 3 from the 27.06.2019, the green propellant LMP-103S has a density of $\rho_{\text{LMP}}=1250 \frac{kg}{m^3}$. Its composition is quite similar to the here optimized propellant. Thus, the propellants density is estimated to be
+\begin{equation*}
+	\rho_{\text{prop}} \approx \rho_{\text{LMP}}=1250 \frac{kg}{m^3}.
+\end{equation*}
+This leads to a propellant volume of 
+\begin{equation*}
+V_{\text{prop}} = m_{\text{prop}} / \rho_{\text{prop}} = 0.1696 \text{m}^3.
+\end{equation*}
+Now the needed amount of pressurant can be calculated using the ideal gas equation and the fact that the tank volume is constant. Furthermore, we assume that the propellant is only released in short burst which will keep the propellant temperature constant at the initial temperature of $T_0=20^\circ\text{C}$.
+\begin{equation}
+V_{\text{tank}} = \frac{m_{N2} R_{N2} T_0}{p_{feed,\text{BOL}}} + V_{\text{prop}} = \frac{m_{N2} R_{N2} T_0}{p_{feed,\text{EOL}}}
+\label{eq:tank_mass_equilibrium}
+\end{equation}
+Using the molecular mass of Nitrogen $M_{N2}=28.01340\frac{\text{g}}{\text{mol}}$ its specific ideal gas constant can be determined to be $R_{N2}=296.78 \frac{\text{J}}{\text{kg K}}$.
+Solving Equation \ref{eq:tank_mass_equilibrium} results in a pressurant mass of
+\begin{equation*}
+	m_{N2} = 1.56kg.
+\end{equation*}
+In comparison, using Helium with a specific ideal gas constant of $R_{He}=2078.5 \frac{\text{J}}{\text{kg K}}$, we would only need $m_{He}=0.223kg$ of pressurant.\\
+
+Then, we can calculate the dimensions of the combined pressurant and propellant tank using Equation \ref{eq:chamber_pressure_estimation} to be
+\begin{equation*}
+	V_{\text{tank}} = 0.226\text{m}^3.
+\end{equation*}
+Which leads to a tank radius $R$, assuming the use of a spherical tank, of
+\begin{equation*}
+	R = \sqrt[3]{\frac{3}{4\pi} V_{\text{tank}}} = 0.377m
+\end{equation*}
+Using Titanium with a maximum allowed operating stress of $S_{Ti}=6894.75\text{bar}$ we can estimate the tank thickness $t$ with a safety factor of 2 to
+\begin{equation*}
+	t = \frac{p_{feed,\text{BOL}}\cdot R}{4 \cdot S_{Ti}} = 0.329\text{mm}
+\end{equation*}
+Finally the empty tank mass is calculated using a Titanium density of $\rho=4430\frac{\text{kg}}{\text{m}^3}$
+\begin{equation*}
+	m_{\text{tank}} = \rho_{Ti} \cdot \frac{4}{3} \pi ((R+t)^3 - R^3) = 2.605kg
+\end{equation*}
+The complete system mass will further need to include several engines, valves, fuel lines and filters. Estimating a mass of the residual parts of $m_{\text{res}} \approx 15\text{kg}$, the complete system mass adds up to 
+\begin{equation*}
+m_{\text{system}} = m_{\text{tank}} + m_{\text{prop}} + m_{\text{N2}} + m_{\text{res}} = 231.135\text{kg}.
+\end{equation*}
+Since the system has a rather high amount of propellant it should be able to propell the spacecraft for longer mission durations in orbit.
 
 % Optimzation results
 \newpage
