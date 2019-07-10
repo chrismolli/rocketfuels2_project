@@ -23,6 +23,7 @@
 \addbibresource{references/papers.bib}  
 \setlength{\parindent}{0em} 
 \usepackage{listings}
+\usepackage{color,soul}
  
 \newcommand{\N}{\mathbb{N}}
 \newcommand{\Z}{\mathbb{Z}}
@@ -56,12 +57,12 @@
 % B1
 \section{Reference Case Definition}
 \label{chap:reference_case}
-Most the orbital propulsion systems used for AOCS tasks don't need to provide a very high amount of $\Delta v$ to the satellite bus. Therefore, lightweight and simple blow-down feed systems (see Figure \ref{fig:blowdown_system}) are usually implemented to supply the propellant to the engines. Usually an injector is used to evenly distribute the fuel within the combustion chamber leading to a pressure loss of $\Delta p_{\text{injector}}$ along the fuel line.\\
+Most the orbital propulsion systems used for AOCS tasks do not need to provide a very high amount of $\Delta v$ to the satellite bus. Therefore, lightweight and simple blow-down feed systems (see Figure \ref{fig:blowdown_system}) are usually implemented to supply the propellant to the engines. Usually an injector is used to evenly distribute the fuel within the combustion chamber leading to a pressure loss of $\Delta p_{\text{injector}}$ along the fuel line.\\
 
 \begin{figure}[!h]
 	\centering
 	\includegraphics[width=\linewidth]{figures/blowdown_sketch}
-	\caption{Simplified view of a pressure blow down system used to transport propellant to the engine. The pressurant and the propellant are separated by a diaphram.}
+	\caption{Simplified view of a pressure blow down system used to transport propellant to the engine. The pressurant and the propellant are separated by a diaphragm.}
 	\label{fig:blowdown_system}
 \end{figure}
 
@@ -87,7 +88,7 @@ During our internet research the propulsion systems in Table \ref{tab:reference}
 		Case & \makecell{Chamber\\ Pressure {[}bar{]}} & Expansion Ratio & \makecell{Initial Propellant\\ Temperature {[}K{]}} \\ \hline
 		XMM Thruster                      &        3.67-16         &  60   &              293.15                      \\ \hline
 	\end{tabular}
-	\caption{Parameters needed for NasaCEA calculations based on the reference case of the XMM thruster system.}
+	\caption{Parameters needed for NASA CEA calculations based on the reference case of the XMM Thruster system.}
 	\label{tab:selected_reference_case}
 \end{table}
 
@@ -95,7 +96,7 @@ Using Equation (\ref{eq:chamber_pressure_estimation}) we can translate the feedi
  
 % B2
 \section{Propellants Comparision}
-Using the parameters of the reference case in Table \ref{tab:selected_reference_case} the following green propellants in Table \ref{tab:comparison} were investigated using NASA CEA. The reaction products were set to frozen from the nozzle on outwards, to prevent further reaction in the nozzle as demanded in the task description.
+Using the parameters of the reference case in Table \ref{tab:selected_reference_case}, the following green propellants in Table \ref{tab:comparison} were investigated using NASA CEA. The reaction products were set to frozen from the nozzle on outwards, to prevent further reaction in the nozzle as demanded in the task description.
 
 \begin{table}[!h]
 	\centering
@@ -121,7 +122,9 @@ The top figure in Figure \ref{fig:fuel_optimization_all_results} shows the resul
 \paragraph{Final result}
 The task demanded a combustion temperature below 1000$^\circ$C (1273.15K). Hence, all results with a higher combustion temperature were removed from the lower figure of Figure \ref{fig:fuel_optimization_all_results}. This lead to the final result with a maximum specific impulse in vacuum of $I_{sp}=236.50s$ using $39\%$ of Methanol, $59\%$ ADN and $2\%$ Water.\\
 
-Furthermore, we need to consider that solid ADN will need to be dissolved in the other two components of the propellant. At a temperature of $20^\circ C$, which is coherent with our initial propellant temperature, $356\text{g}$ ADN can be dissolved in $100\text{g}$ of Water and $86\text{g}$ ADN can be dissolved in $100\text{g}$ Methanol \cite{Larsson2011}.\\
+Additionally, we need to consider that solid ADN will need to be dissolved in the other two components of the propellant. At a temperature of $20^\circ C$, which is coherent with our initial propellant temperature, $356\text{g}$ ADN can be dissolved in $100\text{g}$ of Water and $86\text{g}$ ADN can be dissolved in $100\text{g}$ Methanol \cite{Larsson2011}.\\
+
+\hl{Literaturwerte: 357g und 86,9g!}
 
 According to this data, the used $39\%$ Methanol can dissolve $33.54\%$ of ADN. The remaining $25.46\%$ of ADN would need to be dissolved by the propellants $2\%$ of Water, which can only dissolve $7.12\%$ of ADN at a temperature of 20$^\circ$C. Therefore, the found propellant composition would contain $18.34\%$ of solid ADN rendering it unusable in real engines, because the solids are likely to cause problems in the feeding systems and would lead to inhomogenous mixtures in the combustion chamber.\\
 
@@ -129,24 +132,24 @@ Optimizing the propellant composition to comply with the mentioned solubility co
 
 % B4
 \section{Thruster Preliminary Design}
-The new propulsion system should provide the same amount of thrust as the reference case beeing 20N. With thrust $F$ beeing defined as
+The new propulsion system should provide the same amount of thrust as the reference case being 20N. With thrust $F$ being defined as
 \begin{equation}
 	F = I_{sp} \cdot \dot{m}_{\text{prop}} \cdot g \overset{!}{=} 20\text{N}.
 	\label{eq:thrust}
 \end{equation}
-Therefore, the needed mass flow rate $\dot{m}_{\text{prop}}$ is calculated using the earth's gravitational acceleration of $g=9.81\frac{m}{s^2}$ and the determined specific impulse of task B3 of $I_{sp}=236.5s$.
+Therefore, the required mass flow rate $\dot{m}_{\text{prop}}$ is calculated using the earth's gravitational acceleration of $g=9.81\frac{m}{s^2}$ and the in task B3 determined specific impulse of $I_{sp}=236.5s$.
 \begin{equation*}
 	\dot{m}_{\text{prop}} = 0.00862 \frac{\text{kg}}{\text{s}} = 8.62 \frac{\text{g}}{\text{s}}
 \end{equation*}
-Furthermore, to reach the same amount of total impulse $I_{\text{total}}=517000\text{Ns}$ (see Table \ref{tab:reference}) the propellant mass $m_{\text{prop}}$ can be calculated to be
+To reach the same amount of total impulse $I_{\text{total}}=517000\text{Ns}$ (see Table \ref{tab:reference}) the propellant mass $m_{\text{prop}}$ can be calculated to be
 \begin{equation*}
-	m_{\text{prop}} = \frac{I_{\text{Total}}}{F} \cdot \dot{m}_{\text{prop}} =  211.97\text{kg}
+	m_{\text{prop}} = \frac{I_{\text{Total}}}{F} \cdot \dot{m}_{\text{prop}} =  211.97\text{kg}.
 \end{equation*}
-Using NASA CEA the complete output is computed for the propellant composition found in Section \ref{chap:task_b3}. It can be found on Page \pageref{chap:cea_output} to obtain the characteristic exhaust speed $c^*=4240.4\frac{\text{ft}}{\text{s}}=1292.5\frac{\text{m}}{\text{s}}$.From here we can calculate the needed throat area $A_t$ to
-\begin{equation*}
+Using NASA CEA the complete output is computed for the propellant composition found in Section \ref{chap:task_b3}. It can be found on Page \pageref{chap:cea_output} to obtain the characteristic exhaust speed $c^*=4240.4\frac{\text{ft}}{\text{s}}=1292.5\frac{\text{m}}{\text{s}}$. From here we are able to calculate appropriate throat area $A_t$ to
+\begin{equation}
 	A_t = \frac{c^* \cdot \dot{m}_{\text{prop}}}{p_c} = 6.96 \cdot 10^{-6} \text{m}^2.
 	\label{eq:throat_ares}
-\end{equation*}
+\end{equation}
 Using the expansion ratio $\epsilon=60$ this leads to a nozzle exit area $A_e$ of
 \begin{equation*}
 A_e = \epsilon * A_t = 4.18 \cdot 10^{-4} \text{m}^2.
@@ -159,7 +162,7 @@ Combining Equation \ref{eq:thrust} and Equation \ref{eq:throat_ares} the produce
 	F = I_{sp} \cdot g \cdot \frac{A_t\cdot p_c}{c^*}
 	\label{eq:thrust_vs_pc}
 \end{equation}
-We want the engine to retain at least a quarter of its thrust, being $F_{\text{EOL}}=5\text{N}$, at the end of its life. According to our calculations (see Figure \ref{fig:thrust_vs_pc}) the engine will linearly loss thrust with decreasing chamber pressures. Therefore, a end of life chamber pressure of $p_{c,\text{EOL}}=4\text{bar}$ is defined. Furthermore, the beginning of life chamber pressure is defined to be the same as in the reference case $p_{c,\text{BOL}}=16\text{bar}$.\\
+We want the engine to retain at least a quarter of its thrust, being $F_{\text{EOL}}=5\text{N}$, at the end of its life. According to our calculations (see Figure \ref{fig:thrust_vs_pc}) the engine will linearly loss thrust with decreasing chamber pressures. Therefore, an end of life chamber pressure of $p_{c,\text{EOL}}=4\text{bar}$ is defined. Furthermore, the chamber pressure at mission launch can defined to be the same as in the reference case $p_{c,\text{BOL}}=16\text{bar}$.\\
 
 \begin{figure}[h]
 	\centering
@@ -187,12 +190,12 @@ This leads to a propellant volume of
 \begin{equation*}
 V_{\text{prop}} = m_{\text{prop}} / \rho_{\text{prop}} = 0.1696 \text{m}^3.
 \end{equation*}
-Now the needed amount of pressurant can be calculated using the ideal gas equation and the fact that the tank volume is constant. Furthermore, we assume that the propellant is only released in short burst which will keep the propellant temperature constant at the initial temperature of $T_0=20^\circ\text{C}$.
+Now the needed amount of pressurant can be calculated using the ideal gas equation and taking into account that the tank volume is constant. Moreover, we assume that the propellant is only released in short bursts which will keep the propellant temperature constant at the initial temperature of $T_0=20^\circ\text{C}$.
 \begin{equation}
 V_{\text{tank}} = \frac{m_{N2} R_{N2} T_0}{p_{feed,\text{BOL}}} + V_{\text{prop}} = \frac{m_{N2} R_{N2} T_0}{p_{feed,\text{EOL}}}
 \label{eq:tank_mass_equilibrium}
 \end{equation}
-Using the molecular mass of Nitrogen $M_{N2}=28.01340\frac{\text{g}}{\text{mol}}$ its specific ideal gas constant can be determined to be $R_{N2}=296.78 \frac{\text{J}}{\text{kg K}}$.
+Using the molecular mass of Nitrogen $M_{N2}=28.01340\frac{\text{g}}{\text{mol}}$, its specific ideal gas constant can be determined to be $R_{N2}=296.78 \frac{\text{J}}{\text{kg K}}$.
 Solving Equation \ref{eq:tank_mass_equilibrium} results in a pressurant mass of
 \begin{equation*}
 	m_{N2} = 1.56kg.
@@ -203,17 +206,17 @@ Then, we can calculate the dimensions of the combined pressurant and propellant 
 \begin{equation*}
 	V_{\text{tank}} = 0.226\text{m}^3.
 \end{equation*}
-Which leads to a tank radius $R$, assuming the use of a spherical tank, of
+Which leads to a tank radius $r$, assuming the use of a spherical tank, of
 \begin{equation*}
-	R = \sqrt[3]{\frac{3}{4\pi} V_{\text{tank}}} = 0.377m
+	r = \sqrt[3]{\frac{3}{4\pi} V_{\text{tank}}} = 0.377m
 \end{equation*}
 Using Titanium with a maximum allowed operating stress of $S_{Ti}=6894.75\text{bar}$ we can estimate the tank thickness $t$ with a safety factor of 2 to
 \begin{equation*}
-	t = \frac{p_{feed,\text{BOL}}\cdot R}{4 \cdot S_{Ti}} = 0.329\text{mm}
+	t = \frac{p_{feed,\text{BOL}}\cdot r}{4 \cdot S_{Ti}} = 0.329\text{mm}
 \end{equation*}
 Finally the empty tank mass is calculated using a Titanium density of $\rho=4430\frac{\text{kg}}{\text{m}^3}$
 \begin{equation*}
-	m_{\text{tank}} = \rho_{Ti} \cdot \frac{4}{3} \pi ((R+t)^3 - R^3) = 2.605kg
+	m_{\text{tank}} = \rho_{Ti} \cdot \frac{4}{3} \pi ((r+t)^3 - r^3) = 2.605kg
 \end{equation*}
 The complete system mass will further need to include several engines, valves, fuel lines and filters. Estimating a mass of the residual parts of $m_{\text{res}} \approx 15\text{kg}$, the complete system mass adds up to 
 \begin{equation*}
@@ -243,8 +246,8 @@ Since the system has a rather high amount of propellant it should be able to pro
 		\makecell{TanDEM-X\\Thruster} & \makecell{N2H4} & 4 & 1 & \makecell{$>135000$}& \makecell{$I_{sp}=200-223s$,\\$p_{\text{feed}}=5.5-22\text{bar}$,\\$\epsilon=80$\\} & \makecell{\cite{tandemX} \cite{ariane1N}}\\ \hline
 		
 		\makecell{Prisma\\Thruster}& LMP-103S & 2 & 1 & \makecell{$\approx 108773$} & \makecell{$I_{sp}=204-231s$,\\$p_{\text{feed}}=4.5-22\text{bar}$,\\$\epsilon=100$} & \cite{hpgpThruster} \\ \hline
-		\label{tab:reference}
 	\end{tabular}
+	\label{tab:reference}
 \end{adjustbox}
 
 % Appendix
