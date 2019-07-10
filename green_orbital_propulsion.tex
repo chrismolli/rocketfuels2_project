@@ -18,12 +18,47 @@
 \usepackage[urlcolor=blue,colorlinks=true]{hyperref}
 \usepackage{makecell}
 \usepackage{adjustbox}
+\usepackage{rotating}
 \usepackage[justification=centering]{caption}
 \usepackage[style=alphabetic]{biblatex}  
 \addbibresource{references/papers.bib}  
 \setlength{\parindent}{0em} 
 \usepackage{listings}
 \usepackage{color,soul}
+ \usepackage{appendix}
+ 
+ \definecolor{mygreen}{rgb}{0,0.6,0}
+ \definecolor{mygray}{rgb}{0.5,0.5,0.5}
+ \definecolor{mymauve}{rgb}{0.58,0,0.82}
+ 
+ \lstset{ 
+ 	backgroundcolor=\color{white},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}; should come as last argument
+ 	basicstyle=\footnotesize,        % the size of the fonts that are used for the code
+ 	breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+ 	breaklines=true,                 % sets automatic line breaking
+ 	captionpos=b,                    % sets the caption-position to bottom
+ 	commentstyle=\color{mygreen},    % comment style
+ 	deletekeywords={...},            % if you want to delete keywords from the given language
+ 	escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+ 	extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+ 	firstnumber=1000,                % start line enumeration with line 1000
+ 	frame=single,	                   % adds a frame around the code
+ 	keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+ 	keywordstyle=\color{blue},       % keyword style
+ 	language=Python,                 % the language of the code
+ 	morekeywords={*,...},            % if you want to add more keywords to the set
+ 	numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
+ 	numbersep=5pt,                   % how far the line-numbers are from the code
+ 	numberstyle=\tiny\color{mygray}, % the style that is used for the line-numbers
+ 	rulecolor=\color{black},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+ 	showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+ 	showstringspaces=false,          % underline spaces within strings only
+ 	showtabs=false,                  % show tabs within strings adding particular underscores
+ 	stepnumber=2,                    % the step between two line-numbers. If it's 1, each line will be numbered
+ 	stringstyle=\color{mymauve},     % string literal style
+ 	tabsize=2,	                   % sets default tabsize to 2 spaces
+ 	title=\lstname                   % show the filename of files included with \lstinputlisting; also try caption instead of title
+ }
  
 \newcommand{\N}{\mathbb{N}}
 \newcommand{\Z}{\mathbb{Z}}
@@ -53,7 +88,8 @@
 \author{Christian Molli\`ere\\Luca Irtingkauf\\Christian Strohl}
 \maketitle
 \newpage
-
+\tableofcontents
+\newpage
 % B1
 \section{Reference Case Definition}
 \label{chap:reference_case}
@@ -114,7 +150,7 @@ Using the parameters of the reference case in Table \ref{tab:selected_reference_
 % B3
 \section{Propellant Optimization}
 \label{chap:task_b3}
-To optimize the propellant composition of Methanol, ADN and Water a rocketCEA script was written in Python. It performs a search on a composition grid, with a step size of $1\%$ weight fraction. It iterates through all possible composition permutations. The input parameters were taken from the reference case in Table \ref{tab:selected_reference_case} using only the maximum chamber pressure. The results are discussed in the following.
+To optimize the propellant composition of Methanol, ADN and Water a rocketCEA script was written in Python (see Appendix \ref{chap:code_b3}). It performs a search on a composition grid, with a step size of $1\%$ weight fraction. It iterates through all possible composition permutations. The input parameters were taken from the reference case in Table \ref{tab:selected_reference_case} using only the maximum chamber pressure. The results are discussed in the following.
 
 \paragraph{All results}
 The top figure in Figure \ref{fig:fuel_optimization_all_results} shows the result of the optimization with a maximum specific impulse in vacuum of $I_{sp}=301.43s$ using $17\%$ of Methanol, $83\%$ ADN and $0\%$ Water.
@@ -124,14 +160,13 @@ The task demanded a combustion temperature below 1000$^\circ$C (1273.15K). Hence
 
 Additionally, we need to consider that solid ADN will need to be dissolved in the other two components of the propellant. At a temperature of $20^\circ C$, which is coherent with our initial propellant temperature, $356\text{g}$ ADN can be dissolved in $100\text{g}$ of Water and $86\text{g}$ ADN can be dissolved in $100\text{g}$ Methanol \cite{Larsson2011}.\\
 
-\hl{Literaturwerte: 357g und 86,9g!}
-
 According to this data, the used $39\%$ Methanol can dissolve $33.54\%$ of ADN. The remaining $25.46\%$ of ADN would need to be dissolved by the propellants $2\%$ of Water, which can only dissolve $7.12\%$ of ADN at a temperature of 20$^\circ$C. Therefore, the found propellant composition would contain $18.34\%$ of solid ADN rendering it unusable in real engines, because the solids are likely to cause problems in the feeding systems and would lead to inhomogenous mixtures in the combustion chamber.\\
 
 Optimizing the propellant composition to comply with the mentioned solubility constraint is beyond the scope of this task and shall only be mentioned here.
 
 % B4
 \section{Thruster Preliminary Design}
+\label{chap:task_b4}
 The new propulsion system should provide the same amount of thrust as the reference case being 20N. With thrust $F$ being defined as
 \begin{equation}
 	F = I_{sp} \cdot \dot{m}_{\text{prop}} \cdot g \overset{!}{=} 20\text{N}.
@@ -145,21 +180,22 @@ To reach the same amount of total impulse $I_{\text{total}}=517000\text{Ns}$ (se
 \begin{equation*}
 	m_{\text{prop}} = \frac{I_{\text{Total}}}{F} \cdot \dot{m}_{\text{prop}} =  211.97\text{kg}.
 \end{equation*}
-Using NASA CEA the complete output is computed for the propellant composition found in Section \ref{chap:task_b3}. It can be found on Page \pageref{chap:cea_output} to obtain the characteristic exhaust speed $c^*=4240.4\frac{\text{ft}}{\text{s}}=1292.5\frac{\text{m}}{\text{s}}$. From here we are able to calculate appropriate throat area $A_t$ to
+Using NASA CEA the complete output is computed for the propellant composition found in Section \ref{chap:task_b3}. It can be found on Page \pageref{chap:cea_output} to obtain the characteristic exhaust speed $c^*=4240.4\frac{\text{ft}}{\text{s}}=1292.5\frac{\text{m}}{\text{s}}$.From here we are able to calculate appropriate throat area $A_t$ to
 \begin{equation}
-	A_t = \frac{c^* \cdot \dot{m}_{\text{prop}}}{p_c} = 6.96 \cdot 10^{-6} \text{m}^2.
+	A_t = \frac{c^* \cdot \dot{m}_{\text{prop}}}{8 \cdot p_c} = 6.96 \text{mm}^2.
 	\label{eq:throat_ares}
 \end{equation}
 Using the expansion ratio $\epsilon=60$ this leads to a nozzle exit area $A_e$ of
 \begin{equation*}
-A_e = \epsilon * A_t = 4.18 \cdot 10^{-4} \text{m}^2.
+A_e = \epsilon * A_t = 4.17 \text{cm}^2.
 \end{equation*}
 
 % B5
 \section{Detailed Design Blow-Down Feed System}
+\label{chap:task_b5}
 Combining Equation \ref{eq:thrust} and Equation \ref{eq:throat_ares} the produced thrust of the optimized propellant can be studied for varying chamber pressures $p_c$ as seen in Equation \ref{eq:thrust_vs_pc}.
 \begin{equation}
-	F = I_{sp} \cdot g \cdot \frac{A_t\cdot p_c}{c^*}
+	F = I_{sp} \cdot g \cdot \frac{8 \cdot A_t\cdot p_c}{c^*}
 	\label{eq:thrust_vs_pc}
 \end{equation}
 We want the engine to retain at least a quarter of its thrust, being $F_{\text{EOL}}=5\text{N}$, at the end of its life. According to our calculations (see Figure \ref{fig:thrust_vs_pc}) the engine will linearly loss thrust with decreasing chamber pressures. Therefore, an end of life chamber pressure of $p_{c,\text{EOL}}=4\text{bar}$ is defined. Furthermore, the chamber pressure at mission launch can defined to be the same as in the reference case $p_{c,\text{BOL}}=16\text{bar}$.\\
@@ -224,6 +260,17 @@ m_{\text{system}} = m_{\text{tank}} + m_{\text{prop}} + m_{\text{N2}} + m_{\text
 \end{equation*}
 Since the system has a rather high amount of propellant it should be able to propell the spacecraft for longer mission durations in orbit.
 
+% conclusio 
+\section{Conclusion}
+As shown in Section \ref{chap:task_b4} and \ref{chap:task_b5} we were able to obtain a preliminary design for a green orbital propulsion system. The used propellant has a higher specific impulse in vacuum of $I_{sp}=236.6\text{s}$ and most probably a higher density of $\rho\approx1250 \frac{kg}{s}$, although this is only an estimation. In comparison, the reference case uses Hydrazine, with a density of $\rho_{\text{N2H4}}=1020 \frac{kg}{s}$ at $T_0=20^\circ \text{C}$, achieving around $I_{sp} = 222\text{s} - 230\text{s}$ of specific impulse in vacuum \cite{hydrazine}.\\
+
+The designed system needs less propellant saving around 78kg in propellant mass. Therefore, we could allow for a heavier pressurant, using Nitrogen instead of Helium, since the target was to create a sustainable green propulsion system, which made a difference of around $1.3kg$.\\
+
+Furthermore, the designed thruster is only half as wide in diameter compared to the reference case thruster (comparing Section \ref{chap:task_b4} to Table \ref{tab:reference}). This combined with the higher propellant density possibly result in a smaller overall build volume.\\
+
+Overall, the new system is void of difficult to handle Hydrazine, performs better at a lower mass and volume and comes with a similar combustion temperature as a common Hydrazine thruster. Yet, it shall be noted that the proposed propellant composition might not be usable in real world conditions due to the unresolved solubility issues with the ADN in the used liquids. Therefore, the designed thruster might fail in operation.
+
+
 % Optimzation results
 \newpage
 \begin{figure}[!h]
@@ -236,25 +283,41 @@ Since the system has a rather high amount of propellant it should be able to pro
 
 % Overview
 \newpage
-\begin{adjustbox}{angle=90, center,caption={Overview of small propulsion systems using monopropellants.}}%,float=table}
+\begin{sidewaystable}[]
+	\centering
+	\caption{Overview of small propulsion systems using monopropellants.}
 	\begin{tabular}{|c|c|c|c|c|c|c|}
 		\hline
 		Name & Propellants & \makecell{Number of\\Thrusters} & \makecell{Thruster\\Class {[}N{]}} & \makecell{Total\\Impulse [Ns]} & Other & References\\ \hline
 		
-		\makecell{XMM\\Thruster} & N2H4 & 8 & 20 & \makecell{$>517000$}  & \makecell{$I_{sp}=222-230s$,\\$p_{\text{feed}}=5.5-24\text{bar}$,\\$\epsilon=60$} & \makecell{ \cite{EsaXMM} \cite{ariane20N}} \\ \hline
+		\makecell{XMM\\Thruster} & N2H4 & 8 & 20 & \makecell{$>517000$}  & \makecell{$I_{sp}=222-230s$,\\$p_{\text{feed}}=5.5-24\text{bar}$,\\$\epsilon=60$\\$m_{\text{prop}}=290\text{kg}$\\$A_t=14.25\text{mm}^2$\\$A_e=8.55\text{cm}^2$} & \makecell{ \cite{EsaXMM} \cite{ariane20N}} \\ \hline
 		
-		\makecell{TanDEM-X\\Thruster} & \makecell{N2H4} & 4 & 1 & \makecell{$>135000$}& \makecell{$I_{sp}=200-223s$,\\$p_{\text{feed}}=5.5-22\text{bar}$,\\$\epsilon=80$\\} & \makecell{\cite{tandemX} \cite{ariane1N}}\\ \hline
+		\makecell{TanDEM-X\\Thruster} & \makecell{N2H4} & 4 & 1 & \makecell{$>135000$}& \makecell{$I_{sp}=200-223s$,\\$p_{\text{feed}}=5.5-22\text{bar}$,\\$\epsilon=80$} & \makecell{\cite{tandemX} \cite{ariane1N}}\\ \hline
 		
 		\makecell{Prisma\\Thruster}& LMP-103S & 2 & 1 & \makecell{$\approx 108773$} & \makecell{$I_{sp}=204-231s$,\\$p_{\text{feed}}=4.5-22\text{bar}$,\\$\epsilon=100$} & \cite{hpgpThruster} \\ \hline
 	\end{tabular}
 	\label{tab:reference}
-\end{adjustbox}
+\end{sidewaystable}
+\clearpage 
 
 % Appendix
 \newpage
+\begin{appendices}
+
 \section{NASA CEA Output for Optimized Propellant}
 \label{chap:cea_output}
 \lstinputlisting{results/b4.out}
+
+\section{rocketCEA Code for Fuel Optimization}
+\label{chap:code_b3}
+\lstinputlisting[language=Python]{code/semester_exercise_b3.py}
+
+\section{rocketCEA Code for Thrust vs Chamber Pressure Plot}
+\label{chap:code_b5}
+\lstinputlisting{code/semester_exercise_b5.py}
+
+\end{appendices}
+
 
 % References
 \newpage
